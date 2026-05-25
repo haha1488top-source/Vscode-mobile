@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    user-select: none; /* Щоб текст не виділявся при швидких тапах */
+    user-select: none;
     -webkit-user-select: none;
 }
 
@@ -58,7 +58,7 @@ body, html {
 }
 
 .main-click-btn:active {
-    transform: scale(0.92); /* Ефект стискання при тапі */
+    transform: scale(0.92);
 }
 
 #fallbackText {
@@ -90,8 +90,4 @@ body, html {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
-}
-
-.shop-btn:active {
-    background: #219653;
 }
