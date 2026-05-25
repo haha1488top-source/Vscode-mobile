@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VS Code Mobile Pro</title>
+    <style>
+        :root {
+            --bg-main: #181a1f;
+            --bg-sidebar: #21252b;
+            --bg-header: #282c34;
+            --accent: #61afef;
+            --text-color: #abb2bf;
+            --line-num: #4b5263;
+        }
+        body {
+            margin: 0; padding: 0; background-color: var(--bg-main);
+            color: var(--text-color); font-family: 'Consolas', 'Courier New', monospace;
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+            user-select: none;
+        }
+        /* Топова панель вкладів */
+        header {
+            background-color: var(--bg-header); display: flex;
+            align-items: center; justify-content: space-between; height: 40px;
+            border-bottom: 2px solid #21252b; padding: 0 10px;
+        }
+        .tabs-container { display: flex; gap: 5px; overflow-x: auto; white-space: nowrap; max-width: 70%; }
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab {
+            background: #21252b; padding: 6px 15px; font-size: 0.85rem; border-radius: 4px 4px 0 0;
+            cursor: pointer; border: 1px solid transparent; color: #676e7b;
+        }
+        .tab.active { background: var(--bg-main); color: #fff; border-top: 2px solid var(--accent); }
+        
+        .run-btn {
+            background: #98c379; color: #1e1e1e; border: none; padding: 6px 15px;
+            border-radius: 4px; font-weight: bold; font-size: 0.85rem; cursor: pointer;
+        }
+        .run-btn:active { background: #7cb05f; }
+
+        /* Робочий простір */
+        .workspace { display: flex; flex-grow: 1; position: relative; height: calc(100vh - 65px); }
+
+        /* Номери рядків */
+        .line-numbers {
+            width: 40px; background-color: var(--bg-sidebar); color: var(--line-num);
+            text-align: right; padding-top: 12px; font-size: 0.95rem; line-height: 1.5rem;
+            border-right: 1px solid #282c34; overflow: hidden; font-weight: bold; padding-right: 5px;
+        }
+
+        /* Поле редактора */
+        .editor-wrapper { flex-grow: 1; position: relative; display: flex; background: var(--bg-main); }
+        .code-textarea {
+            flex-grow: 1; background: transparent; color: #e06c75; border: none;
+            resize: none; outline: none; padding: 12px; font-family: inherit;
+            font-size: 0.95rem; line-height: 1.5rem; overflow-y: auto; white-space: pre;
+        }
+
+        /* 🤖 Вікно автопідказок (IntelliSense) */
+        .autocomplete-box {
+            position: absolute; background: #2c313c; border: 1px solid #61afef;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); border-radius: 4px; display: none;
+            flex-direction: column; z-index: 9999; max-height: 150px; overflow-y: auto;
+            min-width: 160px;
+        }
+        .suggest-item {
+            padding: 8px 12px; font-size: 0.85rem; color: #abb2bf; cursor: pointer;
+            border-bottom: 1px solid #21252b; text-align: left;
+        }
+        .suggest-item:hover, .suggest-item.selected { background: #3e4451; color: #61afef; }
+
+        /* Нижня статус-панель */
+        footer {
+            background: var(--accent); height: 25px; display: flex;
+            align-items: center; justify-content: space-between; padding: 0 12px;
+            font-size: 0.8rem; color: #1e1e1e; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="tabs-container">
+            <div class="tab active" id="tab-index" onclick="switchFile('index.html')">index.html</div>
+            <div class="tab" id="tab-style" onclick="switchFile('style.css')">style.css</div>
+            <div class="tab" id="tab-main" onclick="switchFile('main.js')">main.js</div>
+        </div>
+        <button class="run-btn" onclick="runCode()">▶ RUN</button>
+    </header>
+
+    <div class="workspace">
+        <div class="line-numbers" id="line-box">1</div>
+        <div class="editor-wrapper">
+            <textarea class="code-textarea" id="editor" spellcheck="false" oninput="onEditorInput(event)" onkeydown="onEditorKeyDown(event)"></textarea>
+            <div class="autocomplete-box" id="suggest-box"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="status-left">Готовий до кодингу</div>
+        <div>LN <span id="stat-line">1</span>, COL <span id="stat-col">1</span> | UTF-8</div>
+    </footer>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const lineBox = document.getElementById('line-box');
+        const suggestBox = document.getElementById('suggest-box');
+        
+        const files = {
+            'index.html': `<!DOCTYPE html>\n<html>\n<head>\n  <title>My App</title>\n</head>\n<body>\n  <div></div>\n</body>\n</html>`,
+            'style.css': `body {\n  background: #181a1f;\n  color: #fff;\n}`,
+            'main.js': `console.log("Hello from Mobile VS Code!");`
+        };
+        let activeFile = 'index.html';
+
+        // База слів для автопідказок
+        const dictionary = [
+            '<div></div>', '<p></p>', '<span></span>', '<button></button>', 'class=""', 'id=""',
+            'background', 'color', 'display: flex;', 'margin', 'padding', 'position: absolute;',
+            'function', 'console.log', 'document.getElementById', 'const', 'let', 'addEventListener'
+        ];
+
+        editor.value = files[activeFile];
+
+        function updateLines() {
+            const lines = editor.value.split('\n').length;
+            let numHtml = '';
+            for (let i = 1; i <= lines; i++) numHtml += i + '<br>';
+            lineBox.innerHTML = numHtml;
+            files[activeFile] = editor.value;
+
+            // Оновлення статусу курсору
+            const pos = editor.selectionStart;
+            const textBefore = editor.value.substring(0, pos);
+            const linesBefore = textBefore.split('\n');
+            document.getElementById('stat-line').innerText = linesBefore.length;
+            document.getElementById('stat-col').innerText = linesBefore[linesBefore.length - 1].length + 1;
+        }
+
+        function switchFile(fileName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if(fileName === 'index.html') document.getElementById('tab-index').classList.add('active');
+            if(fileName === 'style.css') document.getElementById('tab-style').classList.add('active');
+            if(fileName === 'main.js') document.getElementById('tab-main').classList.add('active');
+            
+            activeFile = fileName;
+            editor.value = files[fileName];
+            suggestBox.style.display = 'none';
+            updateLines();
+        }
+
+        // Логіка підказок (IntelliSense)
+        function onEditorInput(e) {
+            updateLines();
+            const text = editor.value;
+            const pos = editor.selectionStart;
+            
+            // Беремо останнє слово перед курсором
+            const lastWords = text.substring(0, pos).match(/[\w<>-]+$/);
+            
+            if (!lastWords) {
+                suggestBox.style.display = 'none';
+                return;
+            }
+
+            const currentWord = lastWords[0].toLowerCase();
+            const matches = dictionary.filter(word => word.toLowerCase().startsWith(currentWord));
+
+            if (matches.length > 0 && currentWord.length > 0) {
+                suggestBox.innerHTML = '';
+                matches.forEach((match, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'suggest-item' + (index === 0 ? ' selected' : '');
+                    div.innerText = match;
+                    div.onclick = () => insertSuggestion(match, currentWord.length);
+                    suggestBox.appendChild(div);
+                });
+
+                // Позиціонування вікна підказок біля курсору (мобільний спрощений варіант)
+                suggestBox.style.left = '20px';
+                suggestBox.style.bottom = '40px';
+                suggestBox.style.display = 'flex';
+            } else {
+                suggestBox.style.display = 'none';
+            }
+        }
+
+        function insertSuggestion(word, wordLen) {
+            const pos = editor.selectionStart;
+            const text = editor.value;
+            editor.value = text.substring(0, pos - wordLen) + word + text.substring(pos);
+            editor.selectionStart = editor.selectionEnd = pos - wordLen + word.length;
+            suggestBox.style.display = 'none';
+            editor.focus();
+            updateLines();
+        }
+
+        function onEditorKeyDown(e) {
+            // Закриваємо підказки по Enter, якщо нічого не вибрано, або вставляємо першу
+            if (e.key === 'Enter' && suggestBox.style.display === 'flex') {
+                const firstSuggest = suggestBox.querySelector('.suggest-item.selected');
+                if (firstSuggest) {
+                    e.preventDefault();
+                    firstSuggest.click();
+                }
+            }
+        }
+
+        function runCode() {
+            const preview = window.open();
+            let htmlContent = files['index.html'];
+            htmlContent = htmlContent.replace('</head>', `<style>\${files['style.css']}</style></head>`);
+            htmlContent = htmlContent.replace('</body>', `<script>\${files['main.js']}<\/script></body>`);
+            preview.document.write(htmlContent);
+            preview.document.close();
+        }
+
+        editor.addEventListener('scroll', () => { lineBox.scrollTop = editor.scrollTop; });
+        updateLines();
+    </script>
+</body>
+</html>
