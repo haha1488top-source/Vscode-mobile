@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Браво Клікер</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="score-container">
+            <h1 id="scoreDisplay">0</h1>
+            <p>Монет</p>
+        </div>
+
+        <div class="click-area">
+            <button id="clickBtn" class="main-click-btn">
+                <img src="assets/img/clicker-base.png" alt="Клік!" id="clickImg" onerror="this.style.display='none';">
+                <span id="fallbackText">КЛІК!</span>
+            </button>
+        </div>
+
+        <div class="shop-container">
+            <button id="upgradeBtn" class="shop-btn">
+                <span class="btn-title">Прокачати клік (+1)</span>
+                <span class="btn-cost" id="upgradeCostDisplay">Ціна: 10</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
