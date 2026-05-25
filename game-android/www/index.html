@@ -2,143 +2,36 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Мобільний Редактор VS Code (Lite)</title>
-    <style>
-        body {
-            margin: 0; padding: 0; background-color: #1e1e1e;
-            color: #d4d4d4; font-family: 'Courier New', monospace;
-            display: flex; flex-direction: column; height: 100vh; overflow: hidden;
-        }
-        /* Шапка редактора */
-        header {
-            background-color: #3c3c3c; padding: 5px 10px; display: flex;
-            justify-content: space-between; align-items: center; height: 30px; font-size: 0.85rem;
-        }
-        .actions-btn {
-            background-color: #0e639c; color: white; border: none;
-            padding: 3px 10px; border-radius: 2px; cursor: pointer; font-size: 0.8rem;
-        }
-        .actions-btn:active { background-color: #1177bb; }
-
-        /* Головна робоча зона */
-        .main-container { display: flex; flex-grow: 1; height: calc(100vh - 60px); }
-
-        /* Бокова панель (Провідник файлів) */
-        .sidebar {
-            width: 80px; background-color: #252526; border-right: 1px solid #3c3c3c;
-            padding: 10px 5px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 8px;
-        }
-        .file-item { color: #858585; cursor: pointer; padding: 2px 5px; border-radius: 3px; text-align: center; }
-        .file-item.active { color: #fff; background-color: #37373d; font-weight: bold; }
-
-        /* Зона коду */
-        .editor-container { flex-grow: 1; display: flex; position: relative; background-color: #1e1e1e; }
-        
-        /* Нумерація рядків */
-        .line-numbers {
-            width: 35px; background-color: #1e1e1e; color: #858585; text-align: right;
-            padding: 10px 5px 0 0; font-size: 1rem; line-height: 1.5rem; user-select: none;
-            border-right: 1px solid #2d2d2d; overflow: hidden;
-        }
-
-        /* Поле вводу тексту */
-        .code-textarea {
-            flex-grow: 1; background: transparent; color: #9cdcfe; border: none;
-            resize: none; outline: none; padding: 10px; font-family: 'Courier New', monospace;
-            font-size: 1rem; line-height: 1.5rem; overflow-y: auto; white-space: pre;
-        }
-
-        /* Нижня панель статусу */
-        footer {
-            background-color: #007acc; height: 20px; display: flex;
-            align-items: center; justify-content: space-between; padding: 0 10px; font-size: 0.75rem; color: #fff;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Code Mobile Pro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <header>
-        <div>📄 <span id="current-filename">index.html</span></div>
-        <button class="actions-btn" onclick="runCode()">▶ Запустити</button>
-    </header>
-
-    <div class="main-container">
-        <div class="sidebar">
-            <div class="file-item active" onclick="switchFile('index.html')">index.html</div>
-            <div class="file-item" onclick="switchFile('style.css')">style.css</div>
-            <div class="file-item" onclick="switchFile('main.js')">main.js</div>
+    <div class="ide-container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <span>EXPLORER</span>
+                <button class="add-btn" onclick="createNewFile()">+</button>
+            </div>
+            <div class="file-tree" id="fileTree"></div>
         </div>
-
-        <div class="editor-container">
-            <div class="line-numbers" id="line-box">1</div>
-            <textarea class="code-textarea" id="editor" spellcheck="false" oninput="updateLines()"><!DOCTYPE html>
-<html>
-<body>
-  <h1>Привіт з мобільного VS Code!</h1>
-</body>
-</html></textarea>
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="tabs-container" id="tabsContainer"></div>
+                <button class="run-btn" onclick="togglePreview()">▶ Запуск</button>
+            </div>
+            <div class="editor-wrapper">
+                <textarea id="codeEditor" spellcheck="false" placeholder="// Твій код тут..."></textarea>
+                <div class="preview-container" id="previewContainer">
+                    <div class="preview-header">
+                        <span>Прів'ю результату</span>
+                        <button class="close-preview" onclick="togglePreview()">×</button>
+                    </div>
+                    <iframe id="previewFrame"></iframe>
+                </div>
+            </div>
         </div>
     </div>
-
-    <footer>
-        <div>Готовий до роботи</div>
-        <div>UTF-8 | JavaScript</div>
-    </footer>
-
-    <script>
-        const editor = document.getElementById('editor');
-        const lineBox = document.getElementById('line-box');
-        
-        // Віртуальне сховище файлів у пам'яті додатка
-        const files = {
-            'index.html': `<!DOCTYPE html>\n<html>\n<body>\n  <h1>Привіт з мобільного VS Code!</h1>\n</body>\n</html>`,
-            'style.css': `body {\n  background: #000;\n  color: #fff;\n}`,
-            'main.js': `console.log("Додаток запущено успішно!");`
-        };
-        let activeFile = 'index.html';
-
-        // Функція оновлення номерів рядків
-        function updateLines() {
-            const lines = editor.value.split('\n').length;
-            let numHtml = '';
-            for (let i = 1; i <= lines; i++) {
-                numHtml += i + '<br>';
-            }
-            lineBox.innerHTML = numHtml;
-            // Зберігаємо зміни у віртуальний файл
-            files[activeFile] = editor.value;
-        }
-
-        // Перемикання між файлами в табах
-        function switchFile(fileName) {
-            document.querySelectorAll('.file-item').forEach(item => {
-                if(item.innerText === fileName) item.classList.add('active');
-                else item.classList.remove('active');
-            });
-            activeFile = fileName;
-            document.getElementById('current-filename').innerText = fileName;
-            editor.value = files[fileName];
-            updateLines();
-        }
-
-        // Імітація запуску коду (відкриває прев'ю у новому вікні)
-        function runCode() {
-            const previewWindow = window.open();
-            if (activeFile === 'index.html') {
-                previewWindow.document.write(editor.value);
-            } else {
-                alert(`Запуск файлу \${activeFile}!\n\nВміст:\n` + editor.value);
-            }
-        }
-
-        // Синхронізація скролу між цифрами рядків і текстом
-        editor.addEventListener('scroll', () => {
-            lineBox.scrollTop = editor.scrollTop;
-        });
-
-        // Перша ініціалізація рядків
-        updateLines();
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
