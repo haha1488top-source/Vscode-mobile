@@ -8,7 +8,6 @@
 </head>
 <body>
     <div class="game-wrapper">
-        
         <div class="top-bar">
             <div class="bling-counter">
                 <img src="images/bling.png" alt="B" class="icon-bling" onerror="this.style.display='none';">
@@ -20,59 +19,38 @@
         </div>
 
         <div class="stats-bar">
-            <div class="stat-item">
-                <div class="tv-icon">📺</div>
-                <span id="tvDisplay">0</span>
-            </div>
-            <div class="stat-item">
-                <img src="images/gold_coin.png" alt="Coin" class="icon-stat">
-                <span id="coinDisplay">0</span>
-            </div>
-            <div class="stat-item">
-                <img src="images/gems_icon.png" alt="Gem" class="icon-stat">
-                <span id="gemDisplay">1409</span>
-            </div>
+            <div class="stat-item"><div class="tv-icon">📺</div><span id="tvDisplay">0</span></div>
+            <div class="stat-item"><img src="images/gold_coin.png" alt="Coin" class="icon-stat"><span id="coinDisplay">0</span></div>
+            <div class="stat-item"><img src="images/gems_icon.png" alt="Gem" class="icon-stat"><span id="gemDisplay">1409</span></div>
         </div>
 
         <div class="upgrade-bar">
             <div class="power-badge">
                 <div class="power-icon">✊</div>
-                <div class="power-text">
-                    <span data-i18n="power">Сила</span> <span id="powerLevel">1</span>
-                </div>
+                <div class="power-text"><span data-i18n="power">Сила</span> <span id="powerLevel">1</span></div>
             </div>
-            
-            <button id="levelUpBtn" class="action-mini-btn">
-                <span class="arrow-up">⬆️</span>
-            </button>
-
+            <button id="levelUpBtn" class="action-mini-btn"><span class="arrow-up">⬆️</span></button>
             <div class="tip-banner">
                 <div class="tip-avatar"></div>
                 <p data-i18n="click_tip">Кликай по значку в центрі екрана!</p>
             </div>
-
             <div class="nuke-badge">⚠️</div>
         </div>
 
         <div class="grid-space">
             <div class="neon-grid-floor"></div>
-            
             <button id="mainClicker" class="clicker-element">
                 <img src="images/sigmapin.png" alt="Sigma Pin" class="main-pin-img">
             </button>
         </div>
 
         <div class="bottom-navigation">
-            <button class="nav-item special-yellow">
-                <img src="images/pin_pack_icon.png" alt="Pack" class="nav-icon-img" onerror="this.innerHTML='🎫';">
-            </button>
+            <button class="nav-item special-yellow"><img src="images/pin_pack_icon.png" alt="Pack" class="nav-icon-img"></button>
             <button class="nav-item wide-blue" data-i18n="characters">ПЕРСОНАЖІ</button>
             <button class="nav-item wide-blue" data-i18n="shop">МАГАЗИН</button>
             <button class="nav-item skull-blue">💀</button>
         </div>
-
     </div>
-
     <script src="js/app.js"></script>
 </body>
 </html>
