@@ -2,30 +2,75 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Браво Клікер</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Brawl Clicker Tactical</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="game-container">
-        <div class="score-container">
-            <h1 id="scoreDisplay">0</h1>
-            <p>Монет</p>
-        </div>
-
-        <div class="click-area">
-            <button id="clickBtn" class="main-click-btn">
-                <img src="images/clicker-base.png" alt="Клік!" id="clickImg" onerror="this.style.display='none';">
-                <span id="fallbackText">КЛІК!</span>
+    <div class="game-wrapper">
+        
+        <div class="top-bar">
+            <div class="bling-counter">
+                <img src="images/bling.png" alt="B" class="icon-bling" onerror="this.style.display='none';">
+                <span id="blingDisplay">451</span>
+            </div>
+            <button class="settings-btn">
+                <svg viewBox="0 0 24 24"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3-1.57-3-3.5s1.07-3.5 3-3.5 3 1.57 3 3.5-1.07 3.5-3 3.5z"/></svg>
             </button>
         </div>
 
-        <div class="shop-container">
-            <button id="upgradeBtn" class="shop-btn">
-                <span class="btn-title">Прокачати клік (+1)</span>
-                <span class="btn-cost" id="upgradeCostDisplay">Ціна: 10</span>
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="tv-icon">📺</div>
+                <span id="tvDisplay">0</span>
+            </div>
+            <div class="stat-item">
+                <img src="images/gold_coin.png" alt="Coin" class="icon-stat">
+                <span id="coinDisplay">0</span>
+            </div>
+            <div class="stat-item">
+                <img src="images/gems_icon.png" alt="Gem" class="icon-stat">
+                <span id="gemDisplay">1409</span>
+            </div>
+        </div>
+
+        <div class="upgrade-bar">
+            <div class="power-badge">
+                <div class="power-icon">✊</div>
+                <div class="power-text">
+                    <span data-i18n="power">Сила</span> <span id="powerLevel">1</span>
+                </div>
+            </div>
+            
+            <button id="levelUpBtn" class="action-mini-btn">
+                <span class="arrow-up">⬆️</span>
+            </button>
+
+            <div class="tip-banner">
+                <div class="tip-avatar"></div>
+                <p data-i18n="click_tip">Кликай по значку в центрі екрана!</p>
+            </div>
+
+            <div class="nuke-badge">⚠️</div>
+        </div>
+
+        <div class="grid-space">
+            <div class="neon-grid-floor"></div>
+            
+            <button id="mainClicker" class="clicker-element">
+                <img src="images/sigmapin.png" alt="Sigma Pin" class="main-pin-img">
             </button>
         </div>
+
+        <div class="bottom-navigation">
+            <button class="nav-item special-yellow">
+                <img src="images/pin_pack_icon.png" alt="Pack" class="nav-icon-img" onerror="this.innerHTML='🎫';">
+            </button>
+            <button class="nav-item wide-blue" data-i18n="characters">ПЕРСОНАЖІ</button>
+            <button class="nav-item wide-blue" data-i18n="shop">МАГАЗИН</button>
+            <button class="nav-item skull-blue">💀</button>
+        </div>
+
     </div>
 
     <script src="js/app.js"></script>
