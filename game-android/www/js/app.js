@@ -32,7 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateUI() {
-        coinDisplay.innerText = coins; blingDisplay.innerText = blings; powerLevelDisplay.innerText = powerLevel;
+        if(coinDisplay) coinDisplay.innerText = coins; 
+        if(blingDisplay) blingDisplay.innerText = blings; 
+        if(powerLevelDisplay) powerLevelDisplay.innerText = powerLevel;
     }
 
     function createClickEffect(e) {
