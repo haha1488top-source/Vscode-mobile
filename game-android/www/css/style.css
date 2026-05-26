@@ -3,7 +3,6 @@
     --brawl-blue-dark: #0088cc;
     --brawl-orange: #ff9d00;
     --brawl-yellow: #fff200;
-    --brawl-ui-bg: #fff;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial Black', sans-serif; user-select: none; -webkit-user-select: none; }
@@ -15,115 +14,132 @@ body, html { width: 100%; height: 100%; background-color: #000; overflow: hidden
     position: relative; display: flex; flex-direction: column;
 }
 
-.top-bar, .stats-bar, .upgrade-bar {
-    z-index: 10; padding: 10px 14px;
-}
+.top-bar { z-index: 10; padding: 10px 14px; }
 
-/* Верхній лівий лічильник Блігів */
+/* Лічильник Блігів ліворуч */
 .bling-counter {
     position: absolute; top: 15px; left: 15px;
-    background: linear-gradient(to bottom, #d0e4f7, #98c6ed);
-    border: 3px solid #000; border-radius: 8px;
-    display: flex; align-items: center; padding: 4px 12px;
-    color: #fff; font-size: 1.2rem; font-weight: 900; text-shadow: 2px 2px 0 #000;
-    box-shadow: 0 4px 0 #000; transform: skewX(-5deg);
+    background: linear-gradient(to bottom, #f3e5f5, #ce93d8);
+    border: 3px solid #000; border-radius: 10px;
+    display: flex; align-items: center; padding: 4px 16px 4px 12px;
+    color: #fff; font-size: 1.3rem; font-weight: 900; text-shadow: 2px 2px 0 #000;
+    box-shadow: 0 4px 0 #000; transform: skewX(-8deg); z-index: 10;
 }
-.icon-bling { width: 22px; height: 22px; margin-right: 6px; filter: drop-shadow(1px 1px 0 #000); }
+.icon-bling { width: 26px; height: 26px; margin-right: 6px; filter: drop-shadow(1px 1px 0 #000); }
 
-/* Кнопка налаштувань */
+/* Кнопка налаштувань праворуч */
 .settings-btn {
     position: absolute; top: 15px; right: 15px;
     background: linear-gradient(to bottom, #f0f0f0, #ccc);
     border: 3px solid #000; border-radius: 8px;
-    width: 40px; height: 36px; display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 4px 0 #000;
+    width: 42px; height: 38px; display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 4px 0 #000; z-index: 10;
 }
-.settings-btn svg { width: 20px; height: 20px; fill: #555; }
+.settings-btn svg { width: 22px; height: 22px; fill: #555; }
 
-/* Правий блок валют */
+/* ПРАВИЙ БЛОК ВАЛЮТ (ВИПРАВЛЕНИЙ) */
 .stats-bar {
-    position: absolute; top: 60px; right: 15px;
-    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+    position: absolute; top: 65px; right: 15px;
+    display: flex; flex-direction: column; gap: 6px; z-index: 10;
 }
-.stat-item {
-    display: flex; align-items: center; gap: 6px;
-    color: #fff; font-size: 1.1rem; text-shadow: 2px 2px 0 #000;
-}
-.icon-stat { width: 24px; height: 24px; }
-.tv-icon { font-size: 1.3rem; }
 
-/* Рядок покращень */
+/* Кожна плашка валюти окремо */
+.stat-item {
+    background: rgba(0, 0, 0, 0.6); /* Темний напівпрозорий фон */
+    border: 2.5px solid #000; border-radius: 20px; /* Закруглені краї */
+    display: flex; align-items: center; justify-content: flex-end;
+    min-width: 110px; height: 32px; padding: 0 10px 0 35px;
+    position: relative; transform: skewX(-8deg);
+    box-shadow: 0 2.5px 0 rgba(0,0,0,0.4);
+}
+
+/* Текст (цифри) всередині плашки */
+.stat-item span {
+    color: #fff; font-size: 1.1rem; font-weight: 900;
+    text-shadow: 2px 2px 0 #000; transform: skewX(8deg);
+}
+
+/* Іконки, що виступають зліва */
+.icon-stat {
+    position: absolute; left: -10px; top: 50%; transform: translateY(-50%) skewX(8deg);
+    width: 36px; height: 36px; filter: drop-shadow(1px 2px 0 #000);
+}
+
+/* Для телевізора (текстова іконка) */
+.tv-icon {
+    position: absolute; left: -5px; top: 50%; transform: translateY(-50%) skewX(8deg);
+    font-size: 1.6rem; filter: drop-shadow(1px 2px 0 #000);
+}
+
+/* Інші елементи інтерфейсу */
 .upgrade-bar {
-    position: absolute; top: 130px; left: 15px; right: 15px;
-    display: flex; justify-content: space-between; align-items: center;
+    position: absolute; top: 185px; left: 15px; right: 15px;
+    display: flex; justify-content: space-between; align-items: center; z-index: 10;
 }
 .power-badge {
     background: linear-gradient(to bottom, #5bb4ff, #1c73db);
     border: 3px solid #000; border-radius: 8px;
     display: flex; align-items: center; padding: 6px 12px; color: #fff;
-    transform: skewX(-10deg); box-shadow: 0 4px 0 #000; text-shadow: 1px 1px 0 #000;
+    transform: skewX(-10deg); box-shadow: 0 4px 0 #000; text-shadow: 2px 2px 0 #000;
 }
-.power-icon { margin-right: 6px; filter: grayscale(100%) invert(100%); }
+.power-icon { margin-right: 6px; }
 
 .action-mini-btn {
     background: linear-gradient(to bottom, #7fff9e, #1bd94c);
     border: 3px solid #000; border-radius: 8px;
-    width: 38px; height: 38px; display: flex; justify-content: center; align-items: center;
+    width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
     box-shadow: 0 4px 0 #000;
 }
-.arrow-up { font-size: 1.2rem; color: #fff; text-shadow: 1px 1px 0 #000; }
+.arrow-up { font-size: 1.3rem; color: #fff; text-shadow: 1px 1px 0 #000; }
 
 .tip-banner {
     background: linear-gradient(to bottom, #ff8c00, #ff4e00);
     border: 3px solid #000; border-radius: 6px;
-    padding: 6px 10px; display: flex; align-items: center; gap: 6px;
-    transform: skewX(-5deg); box-shadow: 0 4px 0 #000;
+    padding: 6px 12px; display: flex; align-items: center;
+    transform: skewX(-5deg); box-shadow: 0 4px 0 #000; max-width: 180px;
 }
-.tip-banner p { color: #fff; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; text-shadow: 1px 1px 0 #000; }
+.tip-banner p { color: #fff; font-size: 0.75rem; font-weight: 900; text-transform: uppercase; text-shadow: 1px 1px 0 #000; line-height: 1.1; }
 
 .nuke-badge {
     background: linear-gradient(to bottom, #ffdb1e, #ffb600);
     border: 3px solid #000; border-radius: 8px;
-    width: 38px; height: 38px; display: flex; justify-content: center; align-items: center;
-    font-size: 1.3rem; box-shadow: 0 4px 0 #000;
+    width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
+    font-size: 1.4rem; box-shadow: 0 4px 0 #000;
 }
 
-/* Центральна ігрова зона */
 .grid-space {
     flex: 1; position: relative; overflow: hidden;
-    perspective: 500px; display: flex; justify-content: center; align-items: center;
-    margin-top: 200px; /* Відступ під UI */
+    perspective: 600px; display: flex; justify-content: center; align-items: center;
+    margin-top: 140px;
 }
 .neon-grid-floor {
     position: absolute; width: 100%; height: 100%;
-    background-image: linear-gradient(to right, rgba(0, 255, 102, 0.3) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(0, 255, 102, 0.3) 1px, transparent 1px);
-    background-size: 50px 50px;
-    transform: rotateX(60deg) scale(2);
+    background-image: linear-gradient(to right, rgba(0, 255, 102, 0.15) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(0, 255, 102, 0.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+    transform: rotateX(65deg) scale(2.5);
     z-index: 1;
 }
 
-/* Твій іконка для кліків */
 .clicker-element { background: none; border: none; outline: none; z-index: 5; transition: transform 0.05s ease; }
-.clicker-element:active { transform: scale(0.9); }
+.clicker-element:active { transform: scale(0.92); }
 .main-pin-img {
-    width: 120px; height: auto;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+    width: 150px; height: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
-/* Нижня навігація */
 .bottom-navigation {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 10px 20px 10px; gap: 8px;
+    padding: 10px 14px 25px 14px; gap: 8px;
     background: transparent; z-index: 10;
 }
 .nav-item {
-    border: 3px solid #000; border-radius: 8px; color: #fff;
+    border: 3px solid #000; border-radius: 10px; color: #fff;
     font-size: 1.1rem; font-weight: 900; text-shadow: 2px 2px 0 #000;
     display: flex; justify-content: center; align-items: center;
-    height: 48px; box-shadow: 0 4px 0 #000; transform: skewX(-5deg);
+    height: 52px; box-shadow: 0 4px 0 #000; transform: skewX(-6deg);
 }
-.special-yellow { background: linear-gradient(to bottom, #ffe843, #ff9600); width: 60px; }
-.nav-icon-img { width: 30px; height: 30px; transform: skewX(5deg); }
+.special-yellow { background: linear-gradient(to bottom, #ffe843, #ff9600); width: 65px; }
+.nav-icon-img { width: 32px; height: 32px; transform: skewX(6deg); }
 .wide-blue { background: linear-gradient(to bottom, #50a2ff, #0053ca); flex: 1; }
-.skull-blue { background: linear-gradient(to bottom, #5be0ff, #0093ca); width: 50px; font-size: 1.2rem; }
+.skull-blue { background: linear-gradient(to bottom, #5be0ff, #0093ca); width: 55px; font-size: 1.3rem; }
