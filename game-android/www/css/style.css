@@ -37,85 +37,85 @@ body, html { width: 100%; height: 100%; background-color: #000; overflow: hidden
 }
 .settings-btn svg { width: 22px; height: 22px; fill: #555; }
 
-/* ПРАВИЙ БЛОК ВАЛЮТ — ПОВНЕ ПЕРЕЗАВАНТАЖЕННЯ СТИЛІВ */
+/* НОВИЙ ВАРІАНТ: ВАЛЮТА В ОДИН РЯДОК */
 .stats-bar {
-    position: absolute; top: 65px; right: 15px;
-    display: flex; flex-direction: column; gap: 8px; z-index: 10;
-    align-items: flex-end; /* Вирівнювання плашок по правому краю */
+    position: absolute; top: 65px; left: 15px; right: 15px;
+    display: flex; flex-direction: row; justify-content: flex-end; gap: 14px; z-index: 10;
 }
 
-/* Сама плашка під валюту */
+/* Компактна плашка під кожну валюту в рядку */
 .stat-item {
     background: rgba(0, 0, 0, 0.6);
-    border: 3px solid #000; border-radius: 20px;
-    display: flex; align-items: center; 
-    width: 125px; height: 34px; /* Чіткі розміри щоб нічого не їхало */
+    border: 2.5px solid #000; border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    width: 90px; height: 28px; /* Менша висота і ширина, щоб сіли в рядок */
     position: relative; transform: skewX(-8deg);
-    box-shadow: 0 3px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 2.5px 0 rgba(0,0,0,0.4);
 }
 
-/* Текст із цифрами всередині плашки */
+/* Цифри всередині горизонтальних плашок */
 .stat-item span {
-    color: #fff; font-size: 1.1rem; font-weight: 900;
-    text-shadow: 2px 2px 0 #000; transform: skewX(8deg);
-    width: 100%; text-align: center; padding-left: 20px; padding-right: 5px;
+    color: #fff; font-size: 1rem; font-weight: 900;
+    text-shadow: 1.5px 1.5px 0 #000; transform: skewX(8deg);
+    padding-left: 14px; text-align: center; width: 100%;
 }
 
-/* Об'ємні іконки зліва */
+/* Об'ємні іконки, зміщені на лівий край плашки */
 .icon-stat {
-    position: absolute; left: -12px; top: 50%; transform: translateY(-50%) skewX(8deg);
-    width: 38px; height: 38px; filter: drop-shadow(1px 2px 0 #000);
+    position: absolute; left: -10px; top: 50%; transform: translateY(-50%) skewX(8deg);
+    width: 32px; height: 32px; filter: drop-shadow(1px 1.5px 0 #000);
     z-index: 12;
 }
 
-/* Іконка ТВ */
+/* Текстова іконка телевізора */
 .tv-icon {
-    position: absolute; left: -8px; top: 50%; transform: translateY(-50%) skewX(8deg);
-    font-size: 1.5rem; filter: drop-shadow(1px 2px 0 #000);
+    position: absolute; left: -6px; top: 50%; transform: translateY(-50%) skewX(8deg);
+    font-size: 1.3rem; filter: drop-shadow(1px 1.5px 0 #000);
     z-index: 12;
 }
 
-/* Рядок прокачки та банери */
+/* Рядок прокачки тепер піднявся вище, бо звільнилося місце! */
 .upgrade-bar {
-    position: absolute; top: 190px; left: 15px; right: 15px;
+    position: absolute; top: 115px; left: 15px; right: 15px;
     display: flex; justify-content: space-between; align-items: center; z-index: 10;
 }
 .power-badge {
     background: linear-gradient(to bottom, #5bb4ff, #1c73db);
     border: 3px solid #000; border-radius: 8px;
-    display: flex; align-items: center; padding: 6px 12px; color: #fff;
+    display: flex; align-items: center; padding: 5px 10px; color: #fff;
     transform: skewX(-10deg); box-shadow: 0 4px 0 #000; text-shadow: 2px 2px 0 #000;
+    font-size: 0.95rem;
 }
-.power-icon { margin-right: 6px; }
+.power-icon { margin-right: 4px; }
 
 .action-mini-btn {
     background: linear-gradient(to bottom, #7fff9e, #1bd94c);
     border: 3px solid #000; border-radius: 8px;
-    width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 4px 0 #000;
+    width: 36px; height: 36px; display: flex; justify-content: center; align-items: center;
+    box-shadow: 0 3.5px 0 #000;
 }
-.arrow-up { font-size: 1.3rem; color: #fff; text-shadow: 1px 1px 0 #000; }
+.arrow-up { font-size: 1.2rem; color: #fff; text-shadow: 1px 1px 0 #000; }
 
 .tip-banner {
     background: linear-gradient(to bottom, #ff8c00, #ff4e00);
     border: 3px solid #000; border-radius: 6px;
-    padding: 6px 10px; display: flex; align-items: center;
-    transform: skewX(-5deg); box-shadow: 0 4px 0 #000; max-width: 170px;
+    padding: 5px 8px; display: flex; align-items: center;
+    transform: skewX(-5deg); box-shadow: 0 3.5px 0 #000; max-width: 170px;
 }
-.tip-banner p { color: #fff; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; text-shadow: 1px 1px 0 #000; line-height: 1.1; }
+.tip-banner p { color: #fff; font-size: 0.65rem; font-weight: 900; text-transform: uppercase; text-shadow: 1px 1px 0 #000; line-height: 1.1; }
 
 .nuke-badge {
     background: linear-gradient(to bottom, #ffdb1e, #ffb600);
     border: 3px solid #000; border-radius: 8px;
-    width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;
-    font-size: 1.4rem; box-shadow: 0 4px 0 #000;
+    width: 36px; height: 36px; display: flex; justify-content: center; align-items: center;
+    font-size: 1.3rem; box-shadow: 0 3.5px 0 #000;
 }
 
-/* Ігрова зона */
+/* Ігрова зона піднята вище */
 .grid-space {
     flex: 1; position: relative; overflow: hidden;
     perspective: 600px; display: flex; justify-content: center; align-items: center;
-    margin-top: 130px;
+    margin-top: 60px;
 }
 .neon-grid-floor {
     position: absolute; width: 100%; height: 100%;
@@ -129,11 +129,11 @@ body, html { width: 100%; height: 100%; background-color: #000; overflow: hidden
 .clicker-element { background: none; border: none; outline: none; z-index: 5; transition: transform 0.05s ease; }
 .clicker-element:active { transform: scale(0.92); }
 .main-pin-img {
-    width: 150px; height: auto;
+    width: 155px; height: auto;
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
 }
 
-/* Нижні кнопки */
+/* Нижня навігація */
 .bottom-navigation {
     display: flex; justify-content: space-between; align-items: center;
     padding: 10px 14px 25px 14px; gap: 8px;
